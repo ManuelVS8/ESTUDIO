@@ -10,34 +10,29 @@
 
     <style>
         :root {
-            --bg-dark: #1a3a5f;
-            --bg-darker: #0d2340;
+            /* Paleta Cromática */
+            --blue-dark: #0f2b4a;      
+            --blue-700: #1a4b8c;       
+            --blue-bg-grad-1: #0d2340; 
+            --blue-bg-grad-2: #1a3a5f; 
+            --panel: #f0f4f8;         
+            --orange: #f59e42;        
+            --text-main: #000000;
             --white: #FFFFFF;
-            --orange: #f59e42;
-            --text-main: #000000; /* Texto negro solicitado */
-            --text-light: #666;
             --shadow: 0 4px 15px rgba(0,0,0,0.2);
             --radius: 16px;
-            
-            /* Variables para nuevos botones */
-            --color-rojo: #ef4444;
-            --color-rojo-fondo: #fef2f2;
-            --color-rojo-borde: #fee2e2;
-            --color-verde: #16a34a;
-            --color-verde-fondo: #f0fdf4;
-            --color-verde-borde: #dcfce7;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background: linear-gradient(135deg, var(--bg-darker), var(--bg-dark));
+            background: linear-gradient(135deg, var(--blue-bg-grad-1), var(--blue-bg-grad-2));
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -47,79 +42,38 @@
             color: var(--text-main);
         }
 
-        /* --- CONTENEDOR PRINCIPAL (AMPLITUD MÁXIMA) --- */
-        .container {
+        /* --- CONTENEDOR PRINCIPAL (.game-container) --- */
+        .game-container {
             background-color: var(--white);
-            width: 95%; 
-            max-width: 1200px; 
-            min-height: 80vh; 
+            width: 100%;
+            max-width: 980px;     
+            min-height: 640px;    
             border-radius: var(--radius);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            box-shadow: var(--shadow);
             position: relative;
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            padding: 30px;
+            padding: 40px 30px;
             text-align: center;
-            transition: height 0.3s ease;
         }
+
+        /* --- HEADER --- */
+        header { margin-bottom: 20px; }
 
         h1 {
-            color: var(--bg-dark);
-            font-size: 2rem;
+            color: var(--blue-dark);
+            font-weight: 900;     
+            font-size: clamp(2rem, 5vw, 3.1rem);
+            letter-spacing: .5px;
             margin-bottom: 10px;
+            line-height: 1.1;
         }
 
-        h2 {
-            color: var(--bg-dark);
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-        }
-
-        p {
-            margin-bottom: 15px;
-            line-height: 1.5;
-            color: var(--text-main);
-            font-size: 1.1rem;
-        }
-
-        .highlight-orange {
-            color: var(--orange);
-            font-weight: bold;
-        }
-
-        .bold {
-            font-weight: bold;
-        }
-
-        /* --- General Buttons --- */
-        .btn {
-            background-color: var(--orange);
-            color: var(--white);
-            border: none;
-            padding: 12px 30px;
-            font-size: 1.1rem;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            text-decoration: none;
-            margin: 5px;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 10px rgba(0,0,0,0.15);
-            background-color: #e68e35;
-        }
-
-        .btn:active {
-            transform: scale(0.95);
+        .subtitle {
+            color: var(--blue-700);
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            font-weight: 500;
         }
 
         /* --- Screens --- */
@@ -130,322 +84,238 @@
             justify-content: space-between;
             align-items: center;
             width: 100%;
+            height: 100%;
         }
 
-        .screen.active {
-            display: flex;
-        }
+        .screen.active { display: flex; }
 
-        /* --- Start Screen Specifics --- */
+        /* --- CONTENIDO INICIO --- */
         .start-content {
             display: flex;
             flex-direction: column;
             align-items: center;
-            height: 100%;
-            justify-content: space-between;
+            justify-content: center;
+            gap: 1.5rem;
             width: 100%;
+            flex: 1;
         }
 
-        .start-img {
-            max-width: 80%;
+        .advice-box {
+            background-color: var(--panel);
+            border-left: 4px solid var(--blue-700);
+            border-radius: 12px;
+            max-width: 760px;
+            width: 100%;
+            padding: 25px;
+            text-align: center;
+            color: var(--blue-700);
+            font-size: clamp(1rem, 1.5vw, 1.15rem);
+            line-height: 1.6;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .highlight-keyword { color: var(--orange); font-weight: bold; }
+
+        .motivational-msg {
+            display: block;
+            margin-top: 10px;
+            font-weight: 800;
+            font-size: 1.2rem;
+        }
+
+        /* --- BOTÓN PRINCIPAL --- */
+        .btn-primary {
+            background-color: var(--orange);
+            color: var(--white);
+            border: none;
+            height: 48px;        
+            min-width: 140px;    
+            font-weight: 800;     
+            font-size: 1.2rem;
+            border-radius: 10px;  
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary:hover {
+            background-color: #e68e35;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+
+        .btn-primary:active { transform: translateY(1px); }
+
+        /* --- IMAGEN DECORATIVA --- */
+        .start-image {
+            max-width: 300px;
+            width: 100%;
             height: auto;
             object-fit: contain;
-            margin-bottom: 10px;
+            margin-top: auto;
         }
 
-        /* --- Game Screen --- */
-        .progress-container {
-            width: 100%;
-            margin-bottom: 20px;
-        }
+        /* --- GAME STYLES --- */
+        .progress-container { width: 100%; margin-bottom: 20px; }
 
         .progress-text {
-            font-size: 1.2rem; /* Texto barra progreso más grande */
-            color: var(--text-light);
-            margin-bottom: 5px;
-            display: block;
-            text-align: left;
+            font-size: 1rem; color: var(--blue-700); margin-bottom: 5px;
+            display: block; text-align: left; font-weight: 600;
         }
 
         .progress-bar-bg {
-            width: 100%;
-            height: 10px; /* Barra más gruesa */
-            background-color: #eee;
-            border-radius: 5px;
-            overflow: hidden;
+            width: 100%; height: 10px; background-color: #eee;
+            border-radius: 5px; overflow: hidden;
         }
 
         .progress-bar-fill {
-            height: 100%;
-            background-color: var(--bg-dark);
-            width: 0%;
+            height: 100%; background-color: var(--blue-dark); width: 0%;
             transition: width 0.3s ease;
         }
 
-        /* --- TARJETA (CARD) --- */
         .scene {
-            width: 100%;
-            height: 350px; /* Altura base móvil */
-            perspective: 1000px;
-            margin-bottom: 25px;
-            cursor: pointer;
+            width: 100%; height: 350px; perspective: 1000px;
+            margin-bottom: 25px; cursor: pointer;
         }
 
-        /* Ajuste de altura para pantallas grandes */
-        @media (min-width: 768px) {
-            .scene {
-                height: 550px; /* Más alta en PC */
-            }
-        }
+        @media (min-width: 768px) { .scene { height: 500px; } }
 
         .card {
-            width: 100%;
-            height: 100%;
-            position: relative;
+            width: 100%; height: 100%; position: relative;
             transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
-            transform-style: preserve-3d;
-            border-radius: 12px;
-            box-shadow: var(--shadow);
+            transform-style: preserve-3d; border-radius: 12px; box-shadow: var(--shadow);
         }
 
-        .card.is-flipped {
-            transform: rotateY(180deg);
-        }
+        .card.is-flipped { transform: rotateY(180deg); }
 
         .card__face {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            background-color: var(--white);
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 30px;
-            border: 1px solid #eee;
+            position: absolute; width: 100%; height: 100%;
+            backface-visibility: hidden; background-color: var(--white);
+            border-radius: 12px; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; padding: 30px; border: 1px solid #eee;
         }
 
         .card__face--front {
-            z-index: 2;
-            transform: rotateY(0deg);
-            background-color: #FFFFFF; /* Fondo blanco solicitado */
+            z-index: 2; transform: rotateY(0deg); background-color: #FFFFFF;
         }
 
         .card__face--back {
-            transform: rotateY(180deg);
-            background-color: #EBF0FF; /* Fondo azul claro solicitado */
-            padding-top: 70px; /* Espacio superior para etiqueta */
+            transform: rotateY(180deg); background-color: #EBF0FF; padding-top: 70px;
         }
 
         .card-label {
-            position: absolute;
-            top: 25px;
-            font-size: 1rem;
-            text-transform: uppercase;
-            color: var(--text-light);
-            font-weight: 600;
-            letter-spacing: 1px;
-            width: 100%;
-            text-align: center;
+            position: absolute; top: 25px; font-size: 1rem; text-transform: uppercase;
+            color: var(--blue-700); font-weight: 600; letter-spacing: 1px;
+            width: 100%; text-align: center;
         }
 
-        /* --- TEXTO (GRANDE Y CENTRADO) --- */
         .card-text {
-            color: var(--text-main); /* Texto negro */
-            line-height: 1.2;
-            text-align: center; /* Justificación centrada solicitada */
-            width: 100%;
-            
-            /* Tamaño responsive grande para llenar la tarjeta */
-            font-size: 1.6rem; 
-            font-weight: 600;
+            color: var(--text-main); line-height: 1.2; text-align: center;
+            width: 100%; font-size: 1.6rem; font-weight: 600;
         }
 
-        /* Pantallas medianas */
-        @media (min-width: 768px) {
-            .card-text {
-                font-size: 2.8rem; /* Texto muy grande en PC */
-            }
-        }
-        
-        /* Pantallas muy grandes */
-        @media (min-width: 1200px) {
-            .card-text {
-                font-size: 3.5rem; /* Texto gigante en pantallas anchas */
-            }
-        }
+        @media (min-width: 768px) { .card-text { font-size: 2.8rem; } }
+        @media (min-width: 1200px) { .card-text { font-size: 3.5rem; } }
 
         .tap-hint {
-            position: absolute;
-            bottom: 20px;
-            font-size: 1.1rem;
-            color: var(--orange);
-            font-weight: bold;
-            animation: pulse 2s infinite;
+            position: absolute; bottom: 20px; font-size: 1.1rem;
+            color: var(--orange); font-weight: bold; animation: pulse 2s infinite;
         }
 
-        .controls {
-            display: none;
-            width: 100%;
-            justify-content: center;
-            margin-top: 20px;
-        }
+        .controls { display: none; width: 100%; justify-content: center; margin-top: 20px; }
 
         .feedback-msg {
-            font-size: 1.2rem;
-            color: var(--orange);
-            font-weight: bold;
-            height: 30px;
-            margin-top: 10px;
-            opacity: 0;
-            transition: opacity 0.2s;
+            font-size: 1.2rem; color: var(--orange); font-weight: bold;
+            height: 30px; margin-top: 10px; opacity: 0; transition: opacity 0.2s;
         }
 
-        /* --- NEW BUTTON STYLES --- */
+        /* --- BOTONES DE FEEDBACK --- */
         .contenedor-botones {
-            display: flex;
-            gap: 20px;
-            width: 100%;
-            max-width: 900px; 
-            padding: 10px 0;
-            justify-content: center;
+            display: flex; gap: 20px; width: 100%; max-width: 900px;
+            padding: 10px 0; justify-content: center;
         }
 
         .boton-feedback {
-            flex: 1;
-            min-width: 160px;
-            background-color: white;
-            border: none;
-            border-bottom: 8px solid;
-            border-radius: 2rem;
-            padding: 24px 10px;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            transition: all 0.2s ease;
-            outline: none;
-            user-select: none;
+            flex: 1; min-width: 160px; background-color: white; border: none;
+            border-bottom: 8px solid; border-radius: 2rem; padding: 24px 10px;
+            cursor: pointer; display: flex; flex-direction: column;
+            align-items: center; gap: 12px; transition: all 0.2s ease;
+            outline: none; user-select: none;
         }
 
         .icono-circulo {
-            padding: 12px;
-            border-radius: 1rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.3s ease;
+            padding: 12px; border-radius: 1rem; display: flex;
+            justify-content: center; align-items: center; transition: all 0.3s ease;
         }
 
-        .icono-circulo svg {
-            width: 32px;
-            height: 32px;
-        }
+        .icono-circulo svg { width: 32px; height: 32px; }
 
-        /* --- BOTÓN NO LA SABÍA (ROJO) --- */
-        .boton-error {
-            border-color: var(--color-rojo-borde);
-            color: var(--color-rojo);
-        }
+        .boton-error { border-color: #fee2e2; color: #ef4444; }
+        .boton-error .icono-circulo { background-color: #fef2f2; }
+        .boton-error:hover { border-color: #ef4444; }
+        .boton-error:hover .icono-circulo { background-color: #ef4444; color: white; transform: rotate(12deg); }
 
-        .boton-error .icono-circulo {
-            background-color: var(--color-rojo-fondo);
-        }
+        .boton-acierto { border-color: #dcfce7; color: #16a34a; }
+        .boton-acierto .icono-circulo { background-color: #f0fdf4; }
+        .boton-acierto:hover { border-color: #16a34a; }
+        .boton-acierto:hover .icono-circulo { background-color: #16a34a; color: white; transform: rotate(-12deg); }
 
-        .boton-error:hover {
-            border-color: var(--color-rojo);
-        }
+        .boton-feedback:active { transform: translateY(4px); border-bottom-width: 4px; }
+        .texto-boton { font-size: 1rem; font-weight: 900; text-transform: uppercase; letter-spacing: -0.025em; }
 
-        .boton-error:hover .icono-circulo {
-            background-color: var(--color-rojo);
-            color: white;
-            transform: rotate(12deg);
-        }
-
-        /* --- BOTÓN LA SABÍA (VERDE) --- */
-        .boton-acierto {
-            border-color: var(--color-verde-borde);
-            color: var(--color-verde);
-        }
-
-        .boton-acierto .icono-circulo {
-            background-color: var(--color-verde-fondo);
-        }
-
-        .boton-acierto:hover {
-            border-color: var(--color-verde);
-        }
-
-        .boton-acierto:hover .icono-circulo {
-            background-color: var(--color-verde);
-            color: white;
-            transform: rotate(-12deg);
-        }
-
-        /* --- EFECTO DE PULSACIÓN (CLICK) --- */
-        .boton-feedback:active {
-            transform: translateY(4px);
-            border-bottom-width: 4px;
-        }
-
-        .texto-boton {
-            font-size: 1rem; /* Texto botón un poco más grande */
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: -0.025em;
-        }
-
-
-        /* --- End Screen --- */
+        /* --- END SCREEN & TROPHY ANIMATION --- */
         .score-big {
-            font-size: 5rem; 
-            font-weight: 800;
-            color: var(--bg-dark);
-            margin: 10px 0;
+            font-size: 6rem; font-weight: 800; color: var(--blue-dark); margin: 10px 0;
         }
 
         .trophy-container {
-            font-size: 6rem; 
-            margin: 10px 0;
-            display: none;
+            font-size: 6rem; margin: 10px 0; display: none;
+            /* Origin bottom para que rebote sobre su base */
+            transform-origin: center bottom; 
         }
 
-        .end-img {
-            max-width: 150px;
-            margin-top: 20px;
-            object-fit: contain;
+        /* Animación del trofeo: Salta y rota al aparecer */
+        .trophy-animate {
+            animation: trophy-pop 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
         }
+
+        @keyframes trophy-pop {
+            0% { transform: scale(0) rotate(-20deg); opacity: 0; }
+            50% { transform: scale(1.3) rotate(10deg); opacity: 1; }
+            70% { transform: scale(0.9) rotate(-5deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        .end-img { max-width: 150px; margin-top: 20px; object-fit: contain; }
+        
+        .btn-secondary {
+            background-color: var(--blue-dark); color: white; border: none;
+            padding: 12px 30px; font-size: 1.1rem; border-radius: 50px; cursor: pointer;
+            font-weight: bold; transition: transform 0.2s, background-color 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: inline-flex; align-items: center;
+            justify-content: center; gap: 8px; text-decoration: none; margin: 5px;
+        }
+        
+        .btn-secondary:hover { background-color: #163a5e; transform: translateY(-2px); }
 
         /* --- Animations --- */
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        @keyframes pop {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
 
         .anim-pop { animation: pop 0.3s ease-out; }
         .anim-shake { animation: shake 0.4s ease-in-out; }
 
-        /* Print Styles for PDF */
+        /* Print Styles */
         @media print {
             body { background: white; display: block; padding: 0; }
-            .container { box-shadow: none; border: none; max-width: 100%; min-height: auto; }
-            .btn, .progress-container, .scene, .start-img, .end-img, .contenedor-botones { display: none !important; }
+            .game-container { box-shadow: none; border: none; max-width: 100%; min-height: auto; }
+            .btn, .btn-primary, .btn-secondary, .progress-container, .scene, .start-image, .end-image, .contenedor-botones { display: none !important; }
             .screen { display: none !important; }
             #print-area { display: block !important; margin-top: 20px; text-align: left; }
             #print-area h1 { color: black; }
@@ -458,28 +328,29 @@
 </head>
 <body>
 
-    <div class="container">
+    <div class="game-container">
         
         <!-- PANTALLA DE INICIO -->
-        <div id="start-screen" class="screen active">
+        <section id="startScreen" class="screen active">
+            <header>
+                <h1>Animales y plantas</h1>
+                <p class="subtitle">Pon a prueba tus conocimientos.</p>
+            </header>
+
             <div class="start-content">
-                <div style="width: 100%;">
-                    <h1>Animales y plantas</h1>
-                    <p style="color: #666; font-weight: 500;">Pon a prueba tus conocimientos.</p>
-                    <p style="margin-top: 30px; font-size: 1.1rem;">
-                        Consejo: Repasa con este juego y demuestra todo lo que has aprendido sobre la clasificación y características de los <span class="highlight-orange">animales</span> y las <span class="highlight-orange">plantas</span>.
-                    </p>
-                    <p class="bold" style="font-size: 1.3rem; margin-top: 10px;">¡Ánimo!</p>
+                <div class="advice-box">
+                    Repasa con este juego y demuestra todo lo que has aprendido sobre la clasificación y características de los <span class="highlight-keyword">animales</span> y las <span class="highlight-keyword">plantas</span>.
+                    <span class="motivational-msg">¡Ánimo!</span>
                 </div>
                 
-                <img src="https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Ni%C3%B1os.png" alt="Niños estudiando" class="start-img">
+                <button class="btn btn-primary" onclick="startGame()">Jugar</button>
                 
-                <button class="btn" onclick="startGame()">COMENZAR</button>
+                <img src="https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Ni%C3%B1os.png" alt="Niños estudiando" class="start-image">
             </div>
-        </div>
+        </section>
 
         <!-- PANTALLA DE ESTUDIO-JUEGO -->
-        <div id="game-screen" class="screen">
+        <section id="gameScreen" class="screen">
             <div class="progress-container">
                 <span id="progress-text" class="progress-text">Progreso</span>
                 <div class="progress-bar-bg">
@@ -505,7 +376,6 @@
 
             <div class="controls" id="controls">
                 <div class="contenedor-botones">
-                    <!-- Botón No la sabía -->
                     <button class="boton-feedback boton-error" onclick="handleAnswer(false)" id="btn-no">
                         <div class="icono-circulo">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
@@ -516,7 +386,6 @@
                         <span class="texto-boton">No la sabía</span>
                     </button>
 
-                    <!-- Botón La sabía -->
                     <button class="boton-feedback boton-acierto" onclick="handleAnswer(true)" id="btn-yes">
                         <div class="icono-circulo">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
@@ -527,27 +396,32 @@
                     </button>
                 </div>
             </div>
-        </div>
+        </section>
 
         <!-- PANTALLA FINAL -->
-        <div id="end-screen" class="screen">
-            <div>
+        <section id="endScreen" class="screen">
+            <header>
                 <h1>Animales y plantas</h1>
+                <p class="subtitle">Resultados</p>
+            </header>
+            
+            <div>
                 <p>Puntuación:</p>
-                <div class="score-big" id="final-score">0/100</div>
+                <!-- Solo el número, sin /100 -->
+                <div class="score-big" id="final-score">0</div>
                 
                 <div class="trophy-container" id="trophy">🏆</div>
-                <p id="end-message">¡Buen trabajo! Sigue practicando</p>
+                <p id="end-message" style="font-size: 1.5rem; color: var(--blue-700);">¡Buen trabajo! Sigue practicando</p>
                 <p id="time-spent" style="color: #888; font-size: 0.9rem;">Tiempo: 00:00</p>
                 
-                <div style="margin-top: 30px; display: flex; flex-direction: column; align-items: center; gap: 10px;">
-                    <button id="btn-review" class="btn" onclick="startReviewMode()" style="display: none;">
+                <div style="margin-top: 30px; display: flex; flex-direction: column; align-items: center; gap: 15px;">
+                    <button id="btn-review" class="btn btn-primary" onclick="startReviewMode()" style="display: none;">
                         🔄 Repasar falladas
                     </button>
-                    <button id="btn-restart" class="btn" onclick="startGame()">
+                    <button id="btn-restart" class="btn btn-secondary" onclick="goToStartScreen()">
                         ↻ Empezar de nuevo
                     </button>
-                    <button class="btn" style="background-color: #34495e; margin-top: 5px;" onclick="printPDF()">
+                    <button class="btn btn-secondary" style="background-color: #555;" onclick="printPDF()">
                         📄 Descargar Resumen PDF
                     </button>
                 </div>
@@ -555,9 +429,9 @@
 
             <div>
                 <p style="margin-top: 30px; font-size: 0.9rem; color: #999;">Creado por Manuel J. Ventura</p>
-                <img src="https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Siurot.png" alt="Logo Colegio" class="end-img">
+                <img src="https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Siurot.png" alt="Logo Colegio" class="end-img" style="max-width: 120px;">
             </div>
-        </div>
+        </section>
 
     </div>
 
@@ -630,9 +504,9 @@
 
         // --- DOM ELEMENTS ---
         const screens = {
-            start: document.getElementById('start-screen'),
-            game: document.getElementById('game-screen'),
-            end: document.getElementById('end-screen')
+            start: document.getElementById('startScreen'),
+            game: document.getElementById('gameScreen'),
+            end: document.getElementById('endScreen')
         };
         const card = document.getElementById('card');
         const qText = document.getElementById('question-text');
@@ -650,6 +524,11 @@
             masteredQuestions.clear();
             startTime = Date.now();
             startRound(allQuestions);
+        }
+
+        function goToStartScreen() {
+            masteredQuestions.clear();
+            switchScreen('start');
         }
 
         function startRound(questions) {
@@ -769,7 +648,8 @@
             const pointsPerQ = 100 / totalQuestions;
             const score = Math.round(masteredQuestions.size * pointsPerQ);
 
-            document.getElementById('final-score').textContent = `${score}/100`;
+            // Mostrar solo el número (ej: 85), sin /100
+            document.getElementById('final-score').textContent = score;
             
             const timeElapsed = Date.now() - startTime;
             const minutes = Math.floor(timeElapsed / 60000);
@@ -783,13 +663,19 @@
             if (score === 100) {
                 playSound('victoria');
                 msg.textContent = "¡Enhorabuena, puntuación máxima!";
+                
+                // Animación del trofeo
                 trophy.style.display = 'block';
+                trophy.classList.remove('trophy-animate'); // Resetear para que repita si se juega varias veces
+                void trophy.offsetWidth; // Forzar reflow
+                trophy.classList.add('trophy-animate'); // Iniciar animación
+
                 btnReview.style.display = 'none';
                 launchConfetti();
             } else {
                 playSound('completado');
                 msg.textContent = "¡Buen trabajo! Sigue practicando";
-                trophy.style.display = 'none';
+                trophy.style.display = 'none'; // Ocultar trofeo si no es 100
                 
                 const missedCount = totalQuestions - masteredQuestions.size;
                 if (missedCount > 0) {

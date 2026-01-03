@@ -1,46 +1,326 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Botones de Feedback Animados</title>
+    <title>Animales y Plantas - Juego de Estudio</title>
+    <link rel="icon" href="https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/icono.ico" type="image/x-icon">
+    <!-- Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
     <style>
         :root {
+            --bg-dark: #1a3a5f;
+            --bg-darker: #0d2340;
+            --white: #FFFFFF;
+            --orange: #f59e42;
+            --text-main: #000000; /* Texto negro solicitado */
+            --text-light: #666;
+            --shadow: 0 4px 15px rgba(0,0,0,0.2);
+            --radius: 16px;
+            
+            /* Variables para nuevos botones */
             --color-rojo: #ef4444;
             --color-rojo-fondo: #fef2f2;
             --color-rojo-borde: #fee2e2;
             --color-verde: #16a34a;
             --color-verde-fondo: #f0fdf4;
             --color-verde-borde: #dcfce7;
-            --fuente: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
+            background: linear-gradient(135deg, var(--bg-darker), var(--bg-dark));
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            background-color: #1a3a5f; /* Fondo azul oscuro del juego */
-            font-family: var(--fuente);
+            padding: 20px;
+            overflow-x: hidden;
+            color: var(--text-main);
         }
 
+        /* --- CONTENEDOR PRINCIPAL (AMPLITUD MÁXIMA) --- */
+        .container {
+            background-color: var(--white);
+            width: 95%; 
+            max-width: 1200px; 
+            min-height: 80vh; 
+            border-radius: var(--radius);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 30px;
+            text-align: center;
+            transition: height 0.3s ease;
+        }
+
+        h1 {
+            color: var(--bg-dark);
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: var(--bg-dark);
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            line-height: 1.5;
+            color: var(--text-main);
+            font-size: 1.1rem;
+        }
+
+        .highlight-orange {
+            color: var(--orange);
+            font-weight: bold;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
+        /* --- General Buttons --- */
+        .btn {
+            background-color: var(--orange);
+            color: var(--white);
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+            background-color: #e68e35;
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        /* --- Screens --- */
+        .screen {
+            display: none;
+            flex-direction: column;
+            flex: 1;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        /* --- Start Screen Specifics --- */
+        .start-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .start-img {
+            max-width: 80%;
+            height: auto;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+
+        /* --- Game Screen --- */
+        .progress-container {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .progress-text {
+            font-size: 1.2rem; /* Texto barra progreso más grande */
+            color: var(--text-light);
+            margin-bottom: 5px;
+            display: block;
+            text-align: left;
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 10px; /* Barra más gruesa */
+            background-color: #eee;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background-color: var(--bg-dark);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* --- TARJETA (CARD) --- */
+        .scene {
+            width: 100%;
+            height: 350px; /* Altura base móvil */
+            perspective: 1000px;
+            margin-bottom: 25px;
+            cursor: pointer;
+        }
+
+        /* Ajuste de altura para pantallas grandes */
+        @media (min-width: 768px) {
+            .scene {
+                height: 550px; /* Más alta en PC */
+            }
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .card.is-flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card__face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            background-color: var(--white);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            border: 1px solid #eee;
+        }
+
+        .card__face--front {
+            z-index: 2;
+            transform: rotateY(0deg);
+            background-color: #FFFFFF; /* Fondo blanco solicitado */
+        }
+
+        .card__face--back {
+            transform: rotateY(180deg);
+            background-color: #EBF0FF; /* Fondo azul claro solicitado */
+            padding-top: 70px; /* Espacio superior para etiqueta */
+        }
+
+        .card-label {
+            position: absolute;
+            top: 25px;
+            font-size: 1rem;
+            text-transform: uppercase;
+            color: var(--text-light);
+            font-weight: 600;
+            letter-spacing: 1px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* --- TEXTO (GRANDE Y CENTRADO) --- */
+        .card-text {
+            color: var(--text-main); /* Texto negro */
+            line-height: 1.2;
+            text-align: center; /* Justificación centrada solicitada */
+            width: 100%;
+            
+            /* Tamaño responsive grande para llenar la tarjeta */
+            font-size: 1.6rem; 
+            font-weight: 600;
+        }
+
+        /* Pantallas medianas */
+        @media (min-width: 768px) {
+            .card-text {
+                font-size: 2.8rem; /* Texto muy grande en PC */
+            }
+        }
+        
+        /* Pantallas muy grandes */
+        @media (min-width: 1200px) {
+            .card-text {
+                font-size: 3.5rem; /* Texto gigante en pantallas anchas */
+            }
+        }
+
+        .tap-hint {
+            position: absolute;
+            bottom: 20px;
+            font-size: 1.1rem;
+            color: var(--orange);
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+
+        .controls {
+            display: none;
+            width: 100%;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .feedback-msg {
+            font-size: 1.2rem;
+            color: var(--orange);
+            font-weight: bold;
+            height: 30px;
+            margin-top: 10px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        /* --- NEW BUTTON STYLES --- */
         .contenedor-botones {
             display: flex;
             gap: 20px;
             width: 100%;
-            max-width: 500px;
-            padding: 20px;
+            max-width: 900px; 
+            padding: 10px 0;
+            justify-content: center;
         }
 
-        /* Estilo base del botón */
         .boton-feedback {
             flex: 1;
+            min-width: 160px;
             background-color: white;
             border: none;
-            border-bottom: 8px solid; /* El borde inferior que da efecto 3D */
+            border-bottom: 8px solid;
             border-radius: 2rem;
-            padding: 24px;
+            padding: 24px 10px;
             cursor: pointer;
             display: flex;
             flex-direction: column;
@@ -51,7 +331,6 @@
             user-select: none;
         }
 
-        /* Iconos circulares dentro del botón */
         .icono-circulo {
             padding: 12px;
             border-radius: 1rem;
@@ -83,7 +362,7 @@
         .boton-error:hover .icono-circulo {
             background-color: var(--color-rojo);
             color: white;
-            transform: rotate(12deg); /* Animación de rotación al pasar el ratón */
+            transform: rotate(12deg);
         }
 
         /* --- BOTÓN LA SABÍA (VERDE) --- */
@@ -103,53 +382,469 @@
         .boton-acierto:hover .icono-circulo {
             background-color: var(--color-verde);
             color: white;
-            transform: rotate(-12deg); /* Animación de rotación inversa */
+            transform: rotate(-12deg);
         }
 
         /* --- EFECTO DE PULSACIÓN (CLICK) --- */
         .boton-feedback:active {
-            transform: translateY(4px); /* Se hunde un poco */
-            border-bottom-width: 4px; /* El borde se acorta para simular presión */
+            transform: translateY(4px);
+            border-bottom-width: 4px;
         }
 
         .texto-boton {
-            font-size: 0.875rem;
+            font-size: 1rem; /* Texto botón un poco más grande */
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: -0.025em;
         }
+
+
+        /* --- End Screen --- */
+        .score-big {
+            font-size: 5rem; 
+            font-weight: 800;
+            color: var(--bg-dark);
+            margin: 10px 0;
+        }
+
+        .trophy-container {
+            font-size: 6rem; 
+            margin: 10px 0;
+            display: none;
+        }
+
+        .end-img {
+            max-width: 150px;
+            margin-top: 20px;
+            object-fit: contain;
+        }
+
+        /* --- Animations --- */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .anim-pop { animation: pop 0.3s ease-out; }
+        .anim-shake { animation: shake 0.4s ease-in-out; }
+
+        /* Print Styles for PDF */
+        @media print {
+            body { background: white; display: block; padding: 0; }
+            .container { box-shadow: none; border: none; max-width: 100%; min-height: auto; }
+            .btn, .progress-container, .scene, .start-img, .end-img, .contenedor-botones { display: none !important; }
+            .screen { display: none !important; }
+            #print-area { display: block !important; margin-top: 20px; text-align: left; }
+            #print-area h1 { color: black; }
+            .print-item { margin-bottom: 10px; border-bottom: 1px solid #ccc; padding: 10px 0; }
+            .print-q { font-weight: bold; }
+            .print-a { margin-left: 20px; color: #555; }
+        }
+        #print-area { display: none; }
     </style>
 </head>
 <body>
 
-    <div class="contenedor-botones">
-        <!-- Botón No la sabía -->
-        <button class="boton-feedback boton-error" onclick="reaccionar('error')">
-            <div class="icono-circulo">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
+    <div class="container">
+        
+        <!-- PANTALLA DE INICIO -->
+        <div id="start-screen" class="screen active">
+            <div class="start-content">
+                <div style="width: 100%;">
+                    <h1>Animales y plantas</h1>
+                    <p style="color: #666; font-weight: 500;">Pon a prueba tus conocimientos.</p>
+                    <p style="margin-top: 30px; font-size: 1.1rem;">
+                        Consejo: Repasa con este juego y demuestra todo lo que has aprendido sobre la clasificación y características de los <span class="highlight-orange">animales</span> y las <span class="highlight-orange">plantas</span>.
+                    </p>
+                    <p class="bold" style="font-size: 1.3rem; margin-top: 10px;">¡Ánimo!</p>
+                </div>
+                
+                <img src="https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Ni%C3%B1os.png" alt="Niños estudiando" class="start-img">
+                
+                <button class="btn" onclick="startGame()">COMENZAR</button>
             </div>
-            <span class="texto-boton">No la sabía</span>
-        </button>
+        </div>
 
-        <!-- Botón La sabía -->
-        <button class="boton-feedback boton-acierto" onclick="reaccionar('acierto')">
-            <div class="icono-circulo">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
+        <!-- PANTALLA DE ESTUDIO-JUEGO -->
+        <div id="game-screen" class="screen">
+            <div class="progress-container">
+                <span id="progress-text" class="progress-text">Progreso</span>
+                <div class="progress-bar-bg">
+                    <div id="progress-fill" class="progress-bar-fill"></div>
+                </div>
             </div>
-            <span class="texto-boton">La sabía</span>
-        </button>
+
+            <div class="scene">
+                <div class="card" id="card">
+                    <div class="card__face card__face--front">
+                        <span class="card-label">Pregunta</span>
+                        <div class="card-text" id="question-text"></div>
+                        <div class="tap-hint">Toca para ver la respuesta</div>
+                    </div>
+                    <div class="card__face card__face--back">
+                        <span class="card-label">Respuesta</span>
+                        <div class="card-text" id="answer-text"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="feedback-msg" id="feedback-msg">Guardada para repaso</div>
+
+            <div class="controls" id="controls">
+                <div class="contenedor-botones">
+                    <!-- Botón No la sabía -->
+                    <button class="boton-feedback boton-error" onclick="handleAnswer(false)" id="btn-no">
+                        <div class="icono-circulo">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </div>
+                        <span class="texto-boton">No la sabía</span>
+                    </button>
+
+                    <!-- Botón La sabía -->
+                    <button class="boton-feedback boton-acierto" onclick="handleAnswer(true)" id="btn-yes">
+                        <div class="icono-circulo">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </div>
+                        <span class="texto-boton">La sabía</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- PANTALLA FINAL -->
+        <div id="end-screen" class="screen">
+            <div>
+                <h1>Animales y plantas</h1>
+                <p>Puntuación:</p>
+                <div class="score-big" id="final-score">0/100</div>
+                
+                <div class="trophy-container" id="trophy">🏆</div>
+                <p id="end-message">¡Buen trabajo! Sigue practicando</p>
+                <p id="time-spent" style="color: #888; font-size: 0.9rem;">Tiempo: 00:00</p>
+                
+                <div style="margin-top: 30px; display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                    <button id="btn-review" class="btn" onclick="startReviewMode()" style="display: none;">
+                        🔄 Repasar falladas
+                    </button>
+                    <button id="btn-restart" class="btn" onclick="startGame()">
+                        ↻ Empezar de nuevo
+                    </button>
+                    <button class="btn" style="background-color: #34495e; margin-top: 5px;" onclick="printPDF()">
+                        📄 Descargar Resumen PDF
+                    </button>
+                </div>
+            </div>
+
+            <div>
+                <p style="margin-top: 30px; font-size: 0.9rem; color: #999;">Creado por Manuel J. Ventura</p>
+                <img src="https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Siurot.png" alt="Logo Colegio" class="end-img">
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Área oculta para impresión PDF -->
+    <div id="print-area">
+        <h1>Resumen de Estudio: Animales y Plantas</h1>
+        <div id="print-content"></div>
     </div>
 
     <script>
-        function reaccionar(tipo) {
-            console.log("Has pulsado: " + tipo);
-            // Aquí podrías añadir lógica adicional como vibración o sonidos
+        // --- AUDIOS ---
+        const audioUrls = {
+            correcto: "https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Correcto.mp3",
+            error: "https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Error.mp3",
+            victoria: "https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Termin%C3%A9.mp3",
+            completado: "https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Completado.mp3",
+            tap: "https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Tap.mp3"
+        };
+
+        function playSound(name) {
+            const audio = new Audio(audioUrls[name]);
+            audio.volume = 0.5;
+            audio.play().catch(e => console.log("Audio autoplay blocked or error:", e));
         }
+
+        // --- DATASET (31 Preguntas) ---
+        const allQuestions = [
+            { id: 1, question: "¿Qué parte de la planta absorbe sustancias del suelo?", answer: "La raíz es la encargada de absorber el agua y las sales minerales." },
+            { id: 2, question: "¿Qué parte de la planta sirve para fijarla al suelo?", answer: "La raíz se encarga de sostener y fijar la planta al suelo." },
+            { id: 3, question: "¿Qué parte de la planta transporta sustancias por su interior?", answer: "El tallo transporta la savia bruta y la savia elaborada." },
+            { id: 4, question: "¿Qué hace que la planta esté rígida?", answer: "El tallo mantiene la planta erguida y rígida." },
+            { id: 5, question: "¿En qué parte de la planta se fabrica el alimento?", answer: "En la hoja se realiza la fotosíntesis para fabricar el alimento." },
+            { id: 6, question: "¿Qué parte de la planta se encarga de tomar oxígeno del aire?", answer: "Las hojas toman el oxígeno y el dióxido de carbono del aire." },
+            { id: 7, question: "¿Qué parte de la planta es la encargada de la reproducción?", answer: "La flor es el órgano reproductor de las plantas con flor." },
+            { id: 8, question: "¿Dónde se convierte la savia bruta en savia elaborada?", answer: "Esta transformación ocurre en las hojas gracias a la fotosíntesis." },
+            { id: 9, question: "¿Qué parte de la flor se transformará en un fruto?", answer: "El pistilo, tras ser fecundado, se transforma en un fruto." },
+            { id: 10, question: "¿Qué parte de la flor se transformará en las semillas?", answer: "Los óvulos, situados en el pistilo, se transforman en semillas." },
+            { id: 11, question: "¿Cómo es el tallo de las plantas herbáceas?", answer: "Son flexibles y de poca altura, como el trigo." },
+            { id: 12, question: "¿Qué diferencia a un árbol de un arbusto según sus ramas?", answer: "En el árbol las ramas salen de la parte superior; en el arbusto salen desde el suelo." },
+            { id: 13, question: "¿Qué sustancias se mezclan para formar la savia bruta?", answer: "Agua y sales minerales absorbidas por la raíz." },
+            { id: 14, question: "¿En qué parte de la flor se encuentra el polen?", answer: "El polen se encuentra en los estambres (parte masculina)." },
+            { id: 15, question: "¿En qué parte de la flor se encuentran los óvulos?", answer: "Los óvulos se encuentran en el pistilo (parte femenina)." },
+            { id: 16, question: "¿Qué es la parte coloreada que protege los órganos de la flor?", answer: "Los pétalos son la parte coloreada que protege los órganos reproductores." },
+            { id: 17, question: "¿Qué son los artrópodos?", answer: "Son invertebrados con patas articuladas, como insectos o arañas." },
+            { id: 18, question: "¿Qué grupo de invertebrados tienen el cuerpo alargado y sin patas?", answer: "Los anélidos, como las lombrices." },
+            { id: 19, question: "¿Qué son los moluscos?", answer: "Invertebrados que suelen tener concha, como el caracol o el calamar." },
+            { id: 20, question: "¿Qué es el limbo de una hoja?", answer: "Es la parte ancha y plana de la hoja." },
+            { id: 21, question: "¿Qué característica especial tienen los anfibios en su respiración?", answer: "Nacen con branquias y de adultos desarrollan pulmones." },
+            { id: 22, question: "¿Cómo se reproducen los mamíferos?", answer: "Son vivíparos, las crías nacen del vientre de la madre." },
+            { id: 23, question: "¿Qué sustancias necesita la hoja para fabricar alimento?", answer: "Necesita savia bruta, dióxido de carbono y luz solar." },
+            { id: 24, question: "¿Qué tipo de respiración tienen las aves?", answer: "Respiración pulmonar." },
+            { id: 25, question: "Menciona dos tipos de plantas sin flor.", answer: "Los helechos y los musgos se reproducen sin semillas." },
+            { id: 26, question: "¿Qué se obtiene de la fotosíntesis además del alimento?", answer: "Como consecuencia, la planta expulsa oxígeno al aire." },
+            { id: 27, question: "¿A qué grupo pertenecen las estrellas de mar y erizos?", answer: "A los equinodermos, que tienen púas o forma de estrella." },
+            { id: 28, question: "¿Qué son los poríferos?", answer: "Animales invertebrados con el cuerpo lleno de poros, como las esponjas." },
+            { id: 29, question: "¿Cómo se llama el cambio que experimentan algunos animales hasta ser adultos?", answer: "Metamorfosis." },
+            { id: 30, question: "Da un ejemplo de material que se obtenga de las plantas.", answer: "Madera para muebles, algodón para ropa o papel." },
+            { id: 31, question: "¿Qué tres \"ingredientes\" necesita la hoja para hacer la fotosíntesis?", answer: "Savia bruta, dióxido de carbono y luz del sol." }
+        ];
+
+        // --- ESTADO DEL JUEGO ---
+        let currentQueue = [];
+        let currentIndex = 0;
+        let masteredQuestions = new Set(); 
+        let startTime = 0;
+        let isCardFlipped = false;
+        let isProcessing = false; 
+
+        const totalQuestions = allQuestions.length; 
+
+        // --- DOM ELEMENTS ---
+        const screens = {
+            start: document.getElementById('start-screen'),
+            game: document.getElementById('game-screen'),
+            end: document.getElementById('end-screen')
+        };
+        const card = document.getElementById('card');
+        const qText = document.getElementById('question-text');
+        const aText = document.getElementById('answer-text');
+        const controls = document.getElementById('controls');
+        const feedbackMsg = document.getElementById('feedback-msg');
+        const progressBar = document.getElementById('progress-fill');
+        const progressText = document.getElementById('progress-text');
+        const btnYes = document.getElementById('btn-yes');
+        const btnNo = document.getElementById('btn-no');
+
+        // --- FUNCIONES PRINCIPALES ---
+
+        function startGame() {
+            masteredQuestions.clear();
+            startTime = Date.now();
+            startRound(allQuestions);
+        }
+
+        function startRound(questions) {
+            currentQueue = shuffle([...questions]);
+            currentIndex = 0;
+            isCardFlipped = false;
+            isProcessing = false;
+            
+            switchScreen('game');
+            updateProgress();
+            renderCard();
+        }
+
+        function startReviewMode() {
+            const missedQuestions = allQuestions.filter(q => !masteredQuestions.has(q.id));
+            if (missedQuestions.length === 0) {
+                return;
+            }
+            startRound(missedQuestions);
+        }
+
+        function switchScreen(name) {
+            Object.values(screens).forEach(s => s.classList.remove('active'));
+            screens[name].classList.add('active');
+        }
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function renderCard() {
+            card.classList.remove('is-flipped');
+            controls.style.display = 'none';
+            feedbackMsg.style.opacity = '0';
+            isCardFlipped = false;
+            
+            btnYes.classList.remove('anim-pop', 'anim-shake');
+            btnNo.classList.remove('anim-pop', 'anim-shake');
+
+            setTimeout(() => {
+                const q = currentQueue[currentIndex];
+                qText.textContent = q.question;
+                aText.textContent = q.answer;
+            }, 200);
+        }
+
+        // --- INTERACCIONES ---
+
+        card.addEventListener('click', () => {
+            if (isProcessing || isCardFlipped) return;
+            
+            playSound('tap');
+            card.classList.add('is-flipped');
+            isCardFlipped = true;
+            
+            setTimeout(() => {
+                controls.style.display = 'flex';
+            }, 300);
+        });
+
+        function handleAnswer(isCorrect) {
+            if (isProcessing) return;
+            isProcessing = true;
+
+            const currentQ = currentQueue[currentIndex];
+            const btn = isCorrect ? btnYes : btnNo;
+
+            if (isCorrect) {
+                btn.classList.add('anim-pop');
+                playSound('correcto');
+                masteredQuestions.add(currentQ.id);
+
+                setTimeout(() => {
+                    nextCard();
+                    btn.classList.remove('anim-pop');
+                }, 300);
+
+            } else {
+                btn.classList.add('anim-shake');
+                playSound('error');
+                feedbackMsg.style.opacity = '1';
+                masteredQuestions.delete(currentQ.id);
+
+                setTimeout(() => {
+                    nextCard();
+                    btn.classList.remove('anim-shake');
+                    feedbackMsg.style.opacity = '0';
+                }, 500); 
+            }
+        }
+
+        function nextCard() {
+            currentIndex++;
+            updateProgress();
+
+            if (currentIndex < currentQueue.length) {
+                renderCard();
+                isProcessing = false;
+            } else {
+                endGame();
+            }
+        }
+
+        function updateProgress() {
+            progressText.textContent = `Pregunta ${currentIndex + 1} de ${currentQueue.length}`;
+            const pct = (currentIndex / currentQueue.length) * 100;
+            progressBar.style.width = `${pct}%`;
+        }
+
+        // --- FINAL DE JUEGO ---
+
+        function endGame() {
+            const pointsPerQ = 100 / totalQuestions;
+            const score = Math.round(masteredQuestions.size * pointsPerQ);
+
+            document.getElementById('final-score').textContent = `${score}/100`;
+            
+            const timeElapsed = Date.now() - startTime;
+            const minutes = Math.floor(timeElapsed / 60000);
+            const seconds = Math.floor((timeElapsed % 60000) / 1000);
+            document.getElementById('time-spent').textContent = `Tiempo: ${minutes < 10 ? '0'+minutes : minutes}:${seconds < 10 ? '0'+seconds : seconds}`;
+
+            const btnReview = document.getElementById('btn-review');
+            const trophy = document.getElementById('trophy');
+            const msg = document.getElementById('end-message');
+
+            if (score === 100) {
+                playSound('victoria');
+                msg.textContent = "¡Enhorabuena, puntuación máxima!";
+                trophy.style.display = 'block';
+                btnReview.style.display = 'none';
+                launchConfetti();
+            } else {
+                playSound('completado');
+                msg.textContent = "¡Buen trabajo! Sigue practicando";
+                trophy.style.display = 'none';
+                
+                const missedCount = totalQuestions - masteredQuestions.size;
+                if (missedCount > 0) {
+                    btnReview.style.display = 'inline-flex';
+                    btnReview.textContent = `🔄 Repasar ${missedCount} falladas`;
+                } else {
+                    btnReview.style.display = 'none';
+                }
+            }
+
+            switchScreen('end');
+        }
+
+        function launchConfetti() {
+            var duration = 3 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                var particleCount = 50 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
+        }
+
+        // --- IMPRESIÓN PDF ---
+        function printPDF() {
+            const printContent = document.getElementById('print-content');
+            printContent.innerHTML = ''; 
+
+            const sortedQuestions = [...allQuestions].sort((a,b) => a.id - b.id);
+            
+            sortedQuestions.forEach(q => {
+                const div = document.createElement('div');
+                div.className = 'print-item';
+                div.innerHTML = `
+                    <div class="print-q">${q.id}. ${q.question}</div>
+                    <div class="print-a">${q.answer}</div>
+                `;
+                printContent.appendChild(div);
+            });
+
+            window.print();
+        }
+
     </script>
 </body>
 </html>

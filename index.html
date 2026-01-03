@@ -1,0 +1,155 @@
+ <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botones de Feedback Animados</title>
+    <style>
+        :root {
+            --color-rojo: #ef4444;
+            --color-rojo-fondo: #fef2f2;
+            --color-rojo-borde: #fee2e2;
+            --color-verde: #16a34a;
+            --color-verde-fondo: #f0fdf4;
+            --color-verde-borde: #dcfce7;
+            --fuente: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #1a3a5f; /* Fondo azul oscuro del juego */
+            font-family: var(--fuente);
+        }
+
+        .contenedor-botones {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+        }
+
+        /* Estilo base del botón */
+        .boton-feedback {
+            flex: 1;
+            background-color: white;
+            border: none;
+            border-bottom: 8px solid; /* El borde inferior que da efecto 3D */
+            border-radius: 2rem;
+            padding: 24px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.2s ease;
+            outline: none;
+            user-select: none;
+        }
+
+        /* Iconos circulares dentro del botón */
+        .icono-circulo {
+            padding: 12px;
+            border-radius: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .icono-circulo svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        /* --- BOTÓN NO LA SABÍA (ROJO) --- */
+        .boton-error {
+            border-color: var(--color-rojo-borde);
+            color: var(--color-rojo);
+        }
+
+        .boton-error .icono-circulo {
+            background-color: var(--color-rojo-fondo);
+        }
+
+        .boton-error:hover {
+            border-color: var(--color-rojo);
+        }
+
+        .boton-error:hover .icono-circulo {
+            background-color: var(--color-rojo);
+            color: white;
+            transform: rotate(12deg); /* Animación de rotación al pasar el ratón */
+        }
+
+        /* --- BOTÓN LA SABÍA (VERDE) --- */
+        .boton-acierto {
+            border-color: var(--color-verde-borde);
+            color: var(--color-verde);
+        }
+
+        .boton-acierto .icono-circulo {
+            background-color: var(--color-verde-fondo);
+        }
+
+        .boton-acierto:hover {
+            border-color: var(--color-verde);
+        }
+
+        .boton-acierto:hover .icono-circulo {
+            background-color: var(--color-verde);
+            color: white;
+            transform: rotate(-12deg); /* Animación de rotación inversa */
+        }
+
+        /* --- EFECTO DE PULSACIÓN (CLICK) --- */
+        .boton-feedback:active {
+            transform: translateY(4px); /* Se hunde un poco */
+            border-bottom-width: 4px; /* El borde se acorta para simular presión */
+        }
+
+        .texto-boton {
+            font-size: 0.875rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.025em;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="contenedor-botones">
+        <!-- Botón No la sabía -->
+        <button class="boton-feedback boton-error" onclick="reaccionar('error')">
+            <div class="icono-circulo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </div>
+            <span class="texto-boton">No la sabía</span>
+        </button>
+
+        <!-- Botón La sabía -->
+        <button class="boton-feedback boton-acierto" onclick="reaccionar('acierto')">
+            <div class="icono-circulo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            </div>
+            <span class="texto-boton">La sabía</span>
+        </button>
+    </div>
+
+    <script>
+        function reaccionar(tipo) {
+            console.log("Has pulsado: " + tipo);
+            // Aquí podrías añadir lógica adicional como vibración o sonidos
+        }
+    </script>
+</body>
+</html>
